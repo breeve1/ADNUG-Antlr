@@ -1,5 +1,0 @@
-when [ToPractice] is 'cardiology of bob'
-
-*[Insurance] is 'blue cross' +[Insurance] is ''
-*[DocumentCount] greater than 1
-*[DocumentCount] less than 3
