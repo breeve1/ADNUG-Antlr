@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A32BDA55-136C-4B72-89B5-D71D43F3E385}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ParserTree</RootNamespace>
+    <AssemblyName>ParserTree</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime">
+      <HintPath>..\Binaries\Antlr\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AntlrCode\DslLexer.cs" />
+    <Compile Include="AntlrCode\DslParser.cs" />
+    <Compile Include="AntlrCode\Lexer.cs" />
+    <Compile Include="AntlrCode\Parser.cs" />
+    <Compile Include="Bridge\AntlrBridgeTree.cs" />
+    <Compile Include="Bridge\BridgeAdapter.cs" />
+    <Compile Include="Bridge\BridgeBase.cs" />
+    <Compile Include="Bridge\BridgeVisitor.cs" />
+    <Compile Include="Bridge\IBridgeVisitor.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AntlrCode\Dsl.g" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ast\Ast.csproj">
+      <Project>{1d9e7876-e8a3-44e6-a43b-7d4d13e37181}</Project>
+      <Name>Ast</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CodeGen\CodeGen.csproj">
+      <Project>{76b3d28d-c7f9-4d97-8db4-9e292cbb50a5}</Project>
+      <Name>CodeGen</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Runtime\Runtime.csproj">
+      <Project>{8f03e0c0-0369-4eb7-b7ae-3a0e1fb8fbce}</Project>
+      <Name>Runtime</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="BeforeBuild">
+    <PropertyGroup>
+      <BaseDir>$(ProjectDir)AntlrCode</BaseDir>
+      <Antlr>"C:\Program Files\Java\jre7\bin\java" -cp "$(SolutionDir)Binaries\Antlr\antlr-3.5.2.jar" org.antlr.Tool "Dsl.g"</Antlr>
+    </PropertyGroup>
+    <Exec ContinueOnError="true" WorkingDirectory="$(BaseDir)" Command="$(Antlr)" />
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+</Project>
